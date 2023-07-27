@@ -11,22 +11,6 @@ from .papyrus_loaders import load_papyrus
 logger = get_logger(__file__)
 
 
-class FragmentLabels(enum.IntEnum):
-    PAPYRUS = 0
-    INK = 1
-    BACKGROUND = 2
-
-
-class WhatToPredict(enum.IntEnum):
-    SINGLE_PIXEL = 0
-    PATCH = 1
-
-
-class Classes(enum.IntEnum):
-    PAPYRUS_INK = 0
-    PAPYRUS_INK_BACKGROUND = 1
-
-
 class SubVolumeDataset(data.Dataset):
     def __init__(
             self,
@@ -47,11 +31,7 @@ class SubVolumeDataset(data.Dataset):
         assert patch_size % 2 == 0, 'Patch size must be even'
         image_path = Path(image_path)
         self.image_id = image_path.stem
-        self.classes = Classes.PAPYRUS_INK
         self.num_dims = num_dims
-        self.class_labels = {
-            FragmentLabels.PAPYRUS: 'papyrus', FragmentLabels.INK: 'ink'} if self.classes == Classes.PAPYRUS_INK else {
-            FragmentLabels.PAPYRUS: 'papyrus', FragmentLabels.INK: 'ink', FragmentLabels.BACKGROUND: 'background'}
 
         if loaded_papyrus is None:
             papyrus = load_papyrus(
@@ -83,9 +63,8 @@ class SubVolumeDataset(data.Dataset):
 
         if self.load_labels:
             self.labels = papyrus['labels']
-            self.labels = np.where(self.mask == 0, FragmentLabels.BACKGROUND, self.labels)
             labels_pad = ((self.padding, self.padding), (self.padding, self.padding))
-            self.labels = np.pad(self.labels, labels_pad, mode='constant', constant_values=FragmentLabels.BACKGROUND)
+            self.labels = np.pad(self.labels, labels_pad, mode='constant', constant_values=0)
 
         self.valid_pixels = np.argwhere(self.mask).astype(np.uint16)
         mask_pad = ((self.padding, self.padding), (self.padding, self.padding))
@@ -97,7 +76,6 @@ class SubVolumeDataset(data.Dataset):
     @property
     def un_padded_labels(self):
         labels = self.labels[self.padding:-self.padding, self.padding:-self.padding]
-        labels = np.where(labels == FragmentLabels.BACKGROUND, FragmentLabels.PAPYRUS, labels)
         return labels
 
     @property
@@ -135,8 +113,6 @@ class SubVolumeDataset(data.Dataset):
                 result = self.transform(image=sub_volume)
             sub_volume = result['image']
             sub_volume = sub_volume.transpose(2, 0, 1)  # HWC -> CHW
-
-        labels = np.where(labels == FragmentLabels.BACKGROUND, FragmentLabels.PAPYRUS, labels)
 
         return torch.from_numpy(sub_volume), torch.from_numpy(labels.astype(np.int64))
 
@@ -214,7 +190,7 @@ class GridFullPatchedSubVolumeDataset(SubVolumeDataset):
             load_labels: bool,
             transform: Optional[Callable] = None,
             stride: int = -1,
-            num_dims: int = 5,
+            num_dims: int = 4,
             loaded_papyrus: Optional[Dict] = None,
             compute_stride_start: int = 2,
             compute_stride_end: int = 32,

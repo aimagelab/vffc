@@ -76,11 +76,3 @@ def get_eval_transforms(transforms_settings, z_size):
 
     eval_transforms = A.Compose(eval_transforms)
     return eval_transforms
-#
-#
-# def get_test_transforms():
-#     test_transforms = transforms.Compose([
-#         transforms.ToTensor()
-#     ])
-#
-#     return test_transforms

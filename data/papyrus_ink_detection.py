@@ -4,8 +4,6 @@ import torch.utils.data as data
 from torchvision.utils import save_image
 from pathlib import Path
 
-from .sub_volume_dataset import  WhatToPredict, Classes
-
 from utils.logger import get_logger
 
 logger = get_logger(__file__)
@@ -31,41 +29,34 @@ def detect_papyrus_ink(model, dataset, batch_size, threshold, load_labels, devic
             inner_patch_end = dataset.buffer + dataset.inner_patch_buffer
             outputs = outputs[:, :, inner_patch_start:inner_patch_end, inner_patch_start:inner_patch_end]
             ink_predictions_probabilities = outputs.permute(0, 2, 3, 1)
-            if dataset.classes == Classes.PAPYRUS_INK_BACKGROUND:
-                ink_predictions_probabilities = nn.functional.softmax(ink_predictions_probabilities, dim=-1)
-                ink_predictions_probabilities = ink_predictions_probabilities[:, :, :, 1].detach().cpu()
-            else:
-                ink_predictions_probabilities = torch.sigmoid(ink_predictions_probabilities.detach())
-                ink_predictions_probabilities = ink_predictions_probabilities[:, :, :, 0].detach().cpu()
+            ink_predictions_probabilities = torch.sigmoid(ink_predictions_probabilities.detach())
+            ink_predictions_probabilities = ink_predictions_probabilities[:, :, :, 0].detach().cpu()
 
             for j, value in enumerate(ink_predictions_probabilities):
                 patch_num = i * batch_size + j
                 if patch_num < len(dataset.valid_pixels):
                     y, x = dataset.valid_pixels[patch_num] + dataset.padding
-                    if dataset.what_to_predict == WhatToPredict.SINGLE_PIXEL:
-                        output[y, x] = value.item()
-                    else:
-                        y_start_out = max(0, y - dataset.inner_patch_buffer)
-                        y_start_value = y_start_out - (y - dataset.inner_patch_buffer)
-                        y_end_out = min(output.shape[0], y + dataset.inner_patch_buffer)
-                        y_end_value = value.shape[0] - ((y + dataset.inner_patch_buffer) - y_end_out)
+                    y_start_out = max(0, y - dataset.inner_patch_buffer)
+                    y_start_value = y_start_out - (y - dataset.inner_patch_buffer)
+                    y_end_out = min(output.shape[0], y + dataset.inner_patch_buffer)
+                    y_end_value = value.shape[0] - ((y + dataset.inner_patch_buffer) - y_end_out)
 
-                        x_start_out = max(0, x - dataset.inner_patch_buffer)
-                        x_start_value = x_start_out - (x - dataset.inner_patch_buffer)
-                        x_end_out = min(output.shape[1], x + dataset.inner_patch_buffer)
-                        x_end_value = value.shape[1] - ((x + dataset.inner_patch_buffer) - x_end_out)
+                    x_start_out = max(0, x - dataset.inner_patch_buffer)
+                    x_start_value = x_start_out - (x - dataset.inner_patch_buffer)
+                    x_end_out = min(output.shape[1], x + dataset.inner_patch_buffer)
+                    x_end_value = value.shape[1] - ((x + dataset.inner_patch_buffer) - x_end_out)
 
-                        output_y_slice = slice(y_start_out, y_end_out, 1)
-                        output_x_slice = slice(x_start_out, x_end_out, 1)
-                        value_y_slice = slice(y_start_value, y_end_value, 1)
-                        value_x_slice = slice(x_start_value, x_end_value, 1)
-                        output[output_y_slice, output_x_slice] += value[value_y_slice, value_x_slice]
-                        predicted_locations[output_y_slice, output_x_slice] += 1
+                    output_y_slice = slice(y_start_out, y_end_out, 1)
+                    output_x_slice = slice(x_start_out, x_end_out, 1)
+                    value_y_slice = slice(y_start_value, y_end_value, 1)
+                    value_x_slice = slice(x_start_value, x_end_value, 1)
+                    output[output_y_slice, output_x_slice] += value[value_y_slice, value_x_slice]
+                    predicted_locations[output_y_slice, output_x_slice] += 1
 
             if i in percentages:
                 logger.info(f'Processed [{i * batch_size}]/[{len(dataset)}] sub-volumes')
 
-            a = False
+            a = False  # TOTO CHANGE BACK
             if a:
                 break
 
@@ -84,10 +75,10 @@ def detect_papyrus_ink(model, dataset, batch_size, threshold, load_labels, devic
 
     result = {
         'papyrus_id': dataset.image_id,
-        'detection': output_threshold.numpy(),
+        'output': output.cpu(),
+        'detection': output_threshold,
         'middle_papyrus_slice': dataset.middle_slice,
-        'labels': dataset.un_padded_labels if load_labels else '',
-        'class_labels': dataset.class_labels if load_labels else ''
+        'labels': dataset.un_padded_labels if load_labels else ''
     }
 
     return result

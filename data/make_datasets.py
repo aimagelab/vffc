@@ -74,7 +74,7 @@ def make_test_dataset(papyruses, patch_size, z_start, z_size, test_stride, test_
             load_labels=True,
             transform=test_transforms,
             stride=test_stride,
-            num_dims=3,
+            num_dims=4,
             loaded_papyrus=papyrus,
             train=False)
 

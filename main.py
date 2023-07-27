@@ -288,7 +288,6 @@ def main():
                 save_path=args.outputs_path,
             )
 
-
         if args.distributed:
             torch.distributed.barrier()
 

@@ -25,7 +25,6 @@ def train(model, optimizer, lr_scheduler, criterion, scaler, train_loader, epoch
     train_epoch_fbeta = 0.0
 
     model.train()
-    learning_rate = lr_scheduler.get_last_lr()[0]
     percentages = [int(len(train_loader) * i / 100) for i in range(0, 100, 10)][1:]
     for i, (sub_volumes, ink_labels) in enumerate(train_loader):
         optimizer.zero_grad()
