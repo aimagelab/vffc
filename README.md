@@ -7,13 +7,14 @@ We provide the [checkpoint](https://github.com/aimagelab/vffc_anonym/releases/do
 To run this project, we used `python 3.10.12` and `pytorch 2.0`. We provide the environment packages in vffc.yml 
 ```bash
 conda create --name vffc
+pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
 pip install -r vffc.yml
 ```
 
 ## Inference
 To run the model on a folder with images, run the following command:
 ```
-python inference.py checkpoint_path <path to checkpoint> ----papyrus_path <path to the test papyrus folder> 
+python inference.py --checkpoint_path <path to checkpoint> --papyrus_path <path to the test papyrus folder> 
 --output_path <path to the output folder> 
 ```
 Optional arguments are:

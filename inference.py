@@ -34,6 +34,7 @@ def main():
     model.load_state_dict(checkpoint['model'])
     model = model.to(device)
     model.eval()
+    print(f"Loaded checkpoint {args.checkpoint_path}")
     del checkpoint
 
     test_dataset = GridFullPatchedSubVolumeDataset(
@@ -45,6 +46,8 @@ def main():
         transform=None,
         stride=args.stride,
         train=False)
+
+    print(f'Loaded dataset with {len(test_dataset)} samples.')
 
     result = detect_papyrus_ink(model=model,
                                 dataset=test_dataset,

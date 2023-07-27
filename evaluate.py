@@ -38,7 +38,7 @@ def evaluate(model, criterion, eval_loader, epochs, device, epoch):
                 logger.info(f"Epoch [{epoch}]/[{epochs}]. Eval Step [{i}][{len(eval_loader)}]. "
                             f"Eval Loss: {eval_epoch_loss.item() / i}. Eval Fbeta: {eval_epoch_fbeta.item() / i}")
 
-            if DEBUG and i % 6000 == 6000 - 1:
+            if True:
                 logger.info(f'DEBUG mode: breaking')
                 break
 

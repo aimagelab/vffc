@@ -61,7 +61,7 @@ def train(model, optimizer, lr_scheduler, criterion, scaler, train_loader, epoch
 
             iterations_samples_per_second.append(samples_per_second)
 
-        if DEBUG and i % 6000 == 6000 - 1:
+        if True:
             logger.info(f'DEBUG mode: breaking')
             break
 

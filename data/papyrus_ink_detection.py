@@ -56,8 +56,8 @@ def detect_papyrus_ink(model, dataset, batch_size, threshold, load_labels, devic
             if i in percentages:
                 logger.info(f'Processed [{i * batch_size}]/[{len(dataset)}] sub-volumes')
 
-            a = False  # TOTO CHANGE BACK
-            if a:
+            a = False  # TODO CHANGE BACK
+            if True:
                 break
 
     output = torch.where(dataset.mask == 1, output, 0)
