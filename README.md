@@ -6,7 +6,8 @@ We provide the [checkpoint](https://github.com/aimagelab/vffc_anonym/releases/do
 ## Setup
 To run this project, we used `python 3.10.12` and `pytorch 2.0`. We provide the environment packages in vffc.yml 
 ```bash
-pip install -r vfcc.yml
+conda create --name vffc
+pip install -r vffc.yml
 ```
 
 ## Inference
