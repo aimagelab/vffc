@@ -43,9 +43,6 @@ def main():
     # -------- Parsing arguments --------
     parser = argparse.ArgumentParser(description='vesuvius')
 
-    parser.add_argument('--resume', type=str, default='none')
-    parser.add_argument('--threshold', type=float, default=0.5)
-
     # -- Transforms --
     parser.add_argument('--enable_train_augmentations', type=str, default='True', choices=['True', 'False'])
     parser.add_argument('--dihedral_prob', type=float, default=0.5)
@@ -59,16 +56,18 @@ def main():
     parser.add_argument('--outputs_path', type=str, required=True)
 
     # -- Training --
-    parser.add_argument('--z_start', type=int, default=24)
-    parser.add_argument('--z_size', type=int, default=16)
-    parser.add_argument('--patch_size', type=int, default=256)
-    parser.add_argument('--train_stride', type=int, default=64)
-    parser.add_argument('--eval_stride', type=int, default=64)
-    parser.add_argument('--test_stride', type=int, default=32)
+    parser.add_argument('--threshold', type=float, default=0.5)  # TODO
+    parser.add_argument('--z_start', type=int, default=24)  # TODO
+    parser.add_argument('--z_size', type=int, default=16)  # TODO
+    parser.add_argument('--patch_size', type=int, default=256)  # TODO
+    parser.add_argument('--train_stride', type=int, default=64)  # TODO
+    parser.add_argument('--eval_stride', type=int, default=64) # TODO
+    parser.add_argument('--test_stride', type=int, default=64)  # TODO
     parser.add_argument('--test_every_epochs', type=int, default=1)
     parser.add_argument('--epochs', type=int, default=20)
-    parser.add_argument('--batch_size_train', type=int, default=4)
-    parser.add_argument('--batch_size_eval', type=int, default=4)
+    parser.add_argument('--batch_size_train', type=int, default=4)  # TODO
+    parser.add_argument('--batch_size_eval', type=int, default=4)  # TODO
+    parser.add_argument('--resume', type=str, default='none')
 
     # -- Optimization --
     parser.add_argument('--lr_scheduler', type=str, default='one_cycle', choices=['one_cycle', 'constant'])

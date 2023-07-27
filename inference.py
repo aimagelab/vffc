@@ -18,23 +18,18 @@ def main():
     parser.add_argument('--output_path', type=str, required=True)
 
     parser.add_argument('--patch_size', type=int, default=256)
-    parser.add_argument('--test_stride', type=int, default=32)
-    parser.add_argument('--test_every_epochs', type=int, default=1)
-    parser.add_argument('--epochs', type=int, default=20)
 
     parser.add_argument('--batch_size', type=int, default=4)
     parser.add_argument('--threshold', type=float, default=0.5)
     parser.add_argument('--z_start', type=int, default=24)
     parser.add_argument('--z_size', type=int, default=16)
     parser.add_argument('--stride', type=int, default=64)
-    parser.add_argument('--drop_path_rate', type=float, default=0.1)
 
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model_config = {'drop_path_rate': args.drop_path_rate}
 
-    model = VolumetricFFCModel(**model_config)
+    model = VolumetricFFCModel()
     checkpoint = torch.load(args.checkpoint_path, map_location=device)
     model.load_state_dict(checkpoint['model'])
     model = model.to(device)
