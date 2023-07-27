@@ -4,9 +4,9 @@
 We provide the [checkpoint](https://github.com/aimagelab/vffc_anonym/releases/download/Latest/8eb9.pth) for the model:
 
 ## Setup
-To run this project, we used `python 3.10.12` and `pytorch 2.0` 
+To run this project, we used `python 3.10.12` and `pytorch 2.0`. We provide the environment packages in vffc.yml 
 ```bash
-pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 torchaudio==0.13.1 --extra-index-url https://download.pytorch.org/whl/cu117
+pip install -r vfcc.yml
 ```
 
 ## Inference
