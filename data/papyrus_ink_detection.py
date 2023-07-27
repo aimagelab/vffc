@@ -56,10 +56,6 @@ def detect_papyrus_ink(model, dataset, batch_size, threshold, load_labels, devic
             if i in percentages:
                 logger.info(f'Processed [{i * batch_size}]/[{len(dataset)}] sub-volumes')
 
-            a = False  # TODO CHANGE BACK
-            if True:
-                break
-
     output = torch.where(dataset.mask == 1, output, 0)
     predicted_locations = torch.where(dataset.mask == 1, predicted_locations, 0)
     if (predicted_locations - dataset.mask).sum() != 0:

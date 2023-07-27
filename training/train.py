@@ -61,10 +61,6 @@ def train(model, optimizer, lr_scheduler, criterion, scaler, train_loader, epoch
 
             iterations_samples_per_second.append(samples_per_second)
 
-        if True:
-            logger.info(f'DEBUG mode: breaking')
-            break
-
         if is_distributed():
             torch.distributed.barrier()
 

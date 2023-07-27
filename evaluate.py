@@ -38,10 +38,6 @@ def evaluate(model, criterion, eval_loader, epochs, device, epoch):
                 logger.info(f"Epoch [{epoch}]/[{epochs}]. Eval Step [{i}][{len(eval_loader)}]. "
                             f"Eval Loss: {eval_epoch_loss.item() / i}. Eval Fbeta: {eval_epoch_fbeta.item() / i}")
 
-            if True:
-                logger.info(f'DEBUG mode: breaking')
-                break
-
             if is_distributed():
                 torch.distributed.barrier()
 
