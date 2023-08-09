@@ -1,4 +1,15 @@
-# vffc_anonym
+# vffc
+
+This repository contains the reference code and dataset for the paper [Volumetric Fast Fourier Convolution for Detecting Ink on the Carbonized Herculaneum Papyr](https://arxiv.org/abs/).
+If you find it useful, please cite it as:
+```
+@inproceedings{quattrini2023volumetric,
+  title={{Volumetric Fast Fourier Convolution for Detecting Ink on the Carbonized Herculaneum Papyr}},
+  author={Quattrini, Fabio and Pippi, Vittorio and Cascianelli, Silvia and Cucchiara, Rita},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision Workshops (ICCVW)},
+  year={2023}
+}
+```
 
 ## Setup
 We provide the [checkpoint](https://github.com/aimagelab/vffc_anonym/releases/download/Latest/8eb9.pth) for the model:
