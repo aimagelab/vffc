@@ -1,6 +1,6 @@
 # vffc
 
-This repository contains the reference code and dataset for the paper [Volumetric Fast Fourier Convolution for Detecting Ink on the Carbonized Herculaneum Papyri](https://arxiv.org/abs/).
+This repository contains the reference code for the paper [Volumetric Fast Fourier Convolution for Detecting Ink on the Carbonized Herculaneum Papyri](https://arxiv.org/abs/).
 If you find it useful, please cite it as:
 ```
 @inproceedings{quattrini2023volumetric,
